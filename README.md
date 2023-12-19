@@ -5,7 +5,7 @@ A Docker Compose file for the SonarQube
 ## Compose
 
 1. Edit parameters in the .env file, if needed.
-2. Go to the project's root directory and execute the following command: `docker compose up`
+2. Go to the project's root directory and execute the following command: `docker compose up --detach`
 
 ## Author
 
