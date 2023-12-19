@@ -1,0 +1,42 @@
+networks:
+  sonarqube-network:
+
+volumes:
+  sonarqube-postgres:
+  sonarqube-postgres-data:
+  sonarqube-data:
+  sonarqube-extensions:
+  sonarqube-logs:
+
+services:
+  database:
+    image: postgres:15.5
+    environment:
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASS}
+      POSTGRES_DB: ${DATABASE_NAME}
+    networks:
+      - sonarqube-network
+    volumes:
+      - sonarqube-postgres:/var/lib/postgresql
+      - sonarqube-postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  sonarqube:
+    image: sonarqube:10.3.0-community
+    depends_on:
+      - database
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://database:5432/${DATABASE_NAME}
+      SONAR_JDBC_USERNAME: ${DATABASE_USER}
+      SONAR_JDBC_PASSWORD: ${DATABASE_PASS}
+      SONAR_TELEMETRY_ENABLE: false
+    networks:
+      - sonarqube-network
+    volumes:
+      - sonarqube-data:/opt/sonarqube/data
+      - sonarqube-extensions:/opt/sonarqube/extensions
+      - sonarqube-logs:/opt/sonarqube/logs
+    ports:
+      - "9000:9000"
+    restart: unless-stopped
