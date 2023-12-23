@@ -1,12 +1,18 @@
 networks:
   sonarqube-network:
+    name: sonarqube-network
 
 volumes:
   sonarqube-postgres:
+    name: sonarqube-postgres
   sonarqube-postgres-data:
+    name: sonarqube-postgres-data
   sonarqube-data:
+    name: sonarqube-data
   sonarqube-extensions:
+    name: sonarqube-extensions
   sonarqube-logs:
+    name: sonarqube-logs
 
 services:
   database:
